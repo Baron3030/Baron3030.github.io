@@ -7,7 +7,17 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <title>2026 年賀状 AR</title>
   </head>
+   <style>
+      #example-scanning-overlay {
+      }
+      #example-scanning-overlay.hidden {
+        display: none;
+      }
+     </style>
   <body>
+     <div id="example-scanning-overlay" class="hidden">
+  </div>
+     <a-scene mindar-image="uiScanning: #example-scanning-overlay; imageTargetSrc: ./targets.mind">
     <a-scene 
       mindar-image="imageTargetSrc: ./assets/targets.mind; showStats: false;" 
       color-space="sRGB" 
@@ -16,7 +26,6 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <img id="card" src="./assets/card.png"/>
         <a-asset-item id="myModel" src="./assets/model.glb"></a-asset-item>
       </a-assets>
 
