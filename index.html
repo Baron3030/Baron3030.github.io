@@ -3,16 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    
     <title>2026 年賀状 AR</title>
 
     <style>
+      /* --- 【追加】初期説明画面 (please.png) のスタイル --- */
+      #instruction-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: black; /* 背景は黒 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000; /* 一番手前に表示 */
+        opacity: 1;
+        transition: opacity 1s ease; /* フェードアウト用の設定 */
+      }
+      #instruction-overlay img {
+        width: 100%; /* 画面幅いっぱいに表示（please.pngのサイズに合わせる） */
+        height: auto;
+      }
+      /* 非表示にするためのクラス */
+      #instruction-overlay.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
       /* --- スキャン画面のスタイル（変更なし） --- */
       #scanning-overlay {
         display: flex; align-items: center; justify-content: center;
@@ -35,6 +53,10 @@
   </head>
   <body>
     
+    <div id="instruction-overlay">
+      <img src="./assets/please.png" alt="Instruction" />
+    </div>
+
     <div id="scanning-overlay" class="hidden">
       <div class="inner">
         <img src="./assets/card.png" alt="Scan Guide" />
@@ -56,7 +78,6 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        
         <a-gltf-model 
           rotation="90 0 0" 
           position="0 0 0.1" 
@@ -64,8 +85,18 @@
           src="#avatarModel" 
           animation-mixer>
         </a-gltf-model>
-
       </a-entity>
     </a-scene>
+
+    <script>
+      window.addEventListener("load", (event) => {
+        const overlay = document.getElementById("instruction-overlay");
+        // 5000ミリ秒（5秒）後にフェードアウトを開始
+        setTimeout(() => {
+          overlay.classList.add("fade-out");
+        }, 5000);
+      });
+    </script>
+
   </body>
 </html>
