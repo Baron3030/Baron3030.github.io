@@ -9,29 +9,36 @@
     <title>2026 年賀状 AR</title>
 
     <style>
-      /* --- 【追加】初期説明画面 (please.png) のスタイル --- */
+      /* --- 初期説明画面 (please.png) --- */
       #instruction-overlay {
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
-        background-color: black; /* 背景は黒 */
+        background-color: black;
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 1000; /* 一番手前に表示 */
+        z-index: 1000; /* 最前面 */
         opacity: 1;
-        transition: opacity 1s ease; /* フェードアウト用の設定 */
+        transition: opacity 1s ease;
       }
-      #instruction-overlay img {
-        width: 100%; /* 画面幅いっぱいに表示（please.pngのサイズに合わせる） */
-        height: auto;
+      #instruction-overlay img { width: 100%; height: auto; }
+      #instruction-overlay.fade-out { opacity: 0; pointer-events: none; }
+
+      /* --- 【追加】常駐する装飾画像 (icon.png) --- */
+      #ui-icon {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 998; /* スキャン画面と同等、カメラより手前 */
+        pointer-events: none; /* 下のボタン操作などを邪魔しない */
+        display: none; /* 最初は隠しておく */
       }
-      /* 非表示にするためのクラス */
-      #instruction-overlay.fade-out {
-        opacity: 0;
-        pointer-events: none;
+      #ui-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* 画面に合わせて綺麗に配置 */
       }
 
-      /* --- スキャン画面のスタイル（変更なし） --- */
+      /* --- スキャン画面 --- */
       #scanning-overlay {
         display: flex; align-items: center; justify-content: center;
         position: fixed; left: 0; top: 0; width: 100%; height: 100%;
@@ -55,6 +62,10 @@
     
     <div id="instruction-overlay">
       <img src="./assets/please.png" alt="Instruction" />
+    </div>
+
+    <div id="ui-icon">
+      <img src="./assets/icon.png" alt="UI Decoration" />
     </div>
 
     <div id="scanning-overlay" class="hidden">
@@ -90,10 +101,16 @@
 
     <script>
       window.addEventListener("load", (event) => {
-        const overlay = document.getElementById("instruction-overlay");
-        // 5000ミリ秒（5秒）後にフェードアウトを開始
+        const instruction = document.getElementById("instruction-overlay");
+        const uiIcon = document.getElementById("ui-icon");
+
+        // 5秒後に実行
         setTimeout(() => {
-          overlay.classList.add("fade-out");
+          // 説明画面をフェードアウト
+          instruction.classList.add("fade-out");
+          
+          // 装飾画像をパッと表示させる
+          uiIcon.style.display = "block";
         }, 5000);
       });
     </script>
