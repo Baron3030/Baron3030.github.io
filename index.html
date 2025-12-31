@@ -6,18 +6,46 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <title>2026 年賀状 AR</title>
+
+    <style>
+      /* --- 追加部分: カスタムスキャンUIのスタイル --- */
+      #scanning-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* 背景を少し暗くする */
+        z-index: 999;
+      }
+      /* MindARが自動的にこのクラスを付け外しして表示/非表示を切り替えます */
+      #scanning-overlay.hidden {
+        display: none;
+      }
+      /* 重ねる画像のデザイン */
+      #scanning-overlay img {
+        width: 70%;  /* 画面幅の70%の大きさで表示 */
+        opacity: 0.6; /* 半透明にする (透かす) */
+        border: 2px solid white; /* 白い枠線をつける */
+      }
+    </style>
   </head>
   <body>
+    <div id="scanning-overlay" class="hidden">
+      <img src="./assets/card.png" alt="Scan Guide" />
+    </div>
+
     <a-scene 
-      mindar-image="imageTargetSrc: ./assets/targets.mind; showStats: false;" 
+      mindar-image="imageTargetSrc: ./assets/targets.mind; showStats: false; uiScanning: #scanning-overlay;" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <img id="card" src="./assets/card.png" />
-        
         <a-asset-item id="avatarModel" src="./assets/model.glb"></a-asset-item>
       </a-assets>
 
@@ -25,12 +53,10 @@
 
       <a-entity mindar-image-target="targetIndex: 0">
         
-        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-        
         <a-gltf-model 
           rotation="90 0 0" 
           position="0 0 0.1" 
-          scale="0.5 0.5 0.5" 
+          scale="0.05 0.05 0.05" 
           src="#avatarModel" 
           animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
         </a-gltf-model>
